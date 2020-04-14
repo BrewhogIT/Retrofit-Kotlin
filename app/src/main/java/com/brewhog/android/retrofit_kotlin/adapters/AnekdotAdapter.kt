@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brewhog.android.retrofit_kotlin.R
 import com.brewhog.android.retrofit_kotlin.pojo.Anekdot
 
-class AnekdotAdapter(var anekdots : ArrayList<Anekdot>) : RecyclerView.Adapter<AnekdotHolder>() {
+class AnekdotAdapter(var anekdots : List<Anekdot>) : RecyclerView.Adapter<AnekdotHolder>() {
 
-    fun setAnekdotList(newList: ArrayList<Anekdot>){
+    fun setAnekdotList(newList: List<Anekdot>){
         val diffUtillCallback = AnekdotDiffUtilCallback(this.anekdots,newList)
         val diffResult = DiffUtil.calculateDiff(diffUtillCallback)
 
