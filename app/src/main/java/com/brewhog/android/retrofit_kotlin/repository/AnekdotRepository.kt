@@ -2,6 +2,7 @@ package com.brewhog.android.retrofit_kotlin.repository
 
 import android.app.Application
 import android.os.AsyncTask
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.brewhog.android.retrofit_kotlin.api.Controller
 import com.brewhog.android.retrofit_kotlin.database.AnekdotDao
@@ -22,12 +23,15 @@ class AnekdotRepository(application: Application) {
         class addDataAsync(val anekdotDao: AnekdotDao) : AsyncTask<List<Anekdot>,Unit,Unit>(){
             override fun doInBackground(vararg p0: List<Anekdot>?) {
                 anekdotDao.addAnekdot(p0[0]!!)
+                Log.w("AnekdotRepository","!!!!! addDataAsync is run")
+
             }
         }
 
         class getAllDataAsync(val anekdotDao: AnekdotDao) : AsyncTask<Unit,Unit, LiveData<List<Anekdot>>>(){
             override fun doInBackground(vararg p0: Unit?): LiveData<List<Anekdot>> {
                 return anekdotDao.getAllAnekdots()
+                Log.w("AnekdotRepository","!!!!! getAllDataAsync is run")
             }
         }
 
@@ -40,10 +44,14 @@ class AnekdotRepository(application: Application) {
     }
 
     fun loadAndPutInDatabase(){
+        Log.w("AnekdotRepository","!!!!! loadAndPutInDatabase is run")
+
         Controller().getApiArguments().getAnekdots("new anekdot",10)
             .enqueue(object : retrofit2.Callback<List<Anekdot>> {
                 override fun onFailure(call: Call<List<Anekdot>>, t: Throwable) {
                     //Log.e(TAG,"anekdots loading was failed")
+                    Log.e("AnekdotRepository","!!!!! onFailure",t)
+
                 }
 
                 override fun onResponse(
@@ -52,6 +60,9 @@ class AnekdotRepository(application: Application) {
                 ) {
                     deleteAllDataAsync(dao).execute()
                     addDataAsync(dao).execute(response.body())
+
+                    Log.w("AnekdotRepository","!!!!! onResponse, list is: ${response.body()}")
+
 //                    Thread(Runnable {
 //                        dao.deleteAllAnekdots()
 //                        dao.addAnekdot(response.body()!!)

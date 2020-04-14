@@ -14,6 +14,7 @@ class AnekdotAdapter(var anekdots : List<Anekdot>) : RecyclerView.Adapter<Anekdo
         val diffResult = DiffUtil.calculateDiff(diffUtillCallback)
 
         this.anekdots = newList
+        println("!!!!ADAPTER GET LIST $newList")
         diffResult.dispatchUpdatesTo(this)
     }
 

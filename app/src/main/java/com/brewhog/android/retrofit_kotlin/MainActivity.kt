@@ -30,45 +30,40 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getAllAnekdots().observe(this, Observer {
             adapter.setAnekdotList(it)
-            print(it)
+            println("!!!!! OBSERVER GET LIST: $it")
         })
         mainBinding.adapter = adapter
         mainBinding.viewModel = viewModel
 
-        //checkConnection(mainBinding.button)
-        checkConnectedDeprecated(mainBinding.button)
+        checkConnection(viewModel)
+        //checkConnectionDeprecated(mainBinding.button)
     }
 
-    fun checkConnection(view : View){
+    fun checkConnection(viewModel : AnekdotViewModel){
         val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkRequest = NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .build()
         var callback = object : ConnectivityManager.NetworkCallback(){
             override fun onAvailable(network: Network) {
-                view.isEnabled = true
-                view.isClickable = true
+                viewModel.isConnected.set(true)
 
                 Toast.makeText(baseContext,"Network is available", Toast.LENGTH_LONG).show()
             }
 
             override fun onLost(network: Network) {
-                view.isEnabled = false
-                view.isClickable = false
+                viewModel.isConnected.set(false)
 
                 Toast.makeText(baseContext,"onLost", Toast.LENGTH_LONG).show()
             }
 
             override fun onLosing(network: Network, maxMsToLive: Int) {
-                view.isEnabled = false
-                view.isClickable = false
+                viewModel.isConnected.set(false)
 
                 Toast.makeText(baseContext,"onLosing", Toast.LENGTH_LONG).show()
             }
 
             override fun onUnavailable() {
-                view.isEnabled = false
-                view.isClickable = false
+                viewModel.isConnected.set(false)
 
                 Toast.makeText(baseContext,"onUnavailable", Toast.LENGTH_LONG).show()
             }
@@ -83,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         manager.registerNetworkCallback(networkRequest,callback)
     }
 
-    fun checkConnectedDeprecated(view : View){
+    fun checkConnectionDeprecated(view : View){
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
