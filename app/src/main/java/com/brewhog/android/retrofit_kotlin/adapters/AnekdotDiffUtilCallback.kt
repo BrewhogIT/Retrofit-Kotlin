@@ -8,7 +8,7 @@ class AnekdotDiffUtilCallback (var oldList : List<Anekdot>, var newList : List<A
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
-        return oldItem.link == newItem.link
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

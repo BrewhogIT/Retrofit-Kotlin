@@ -53,19 +53,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLost(network: Network) {
                 viewModel.isConnected.set(false)
 
-                Toast.makeText(baseContext,"onLost", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onLosing(network: Network, maxMsToLive: Int) {
-                viewModel.isConnected.set(false)
-
-                Toast.makeText(baseContext,"onLosing", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onUnavailable() {
-                viewModel.isConnected.set(false)
-
-                Toast.makeText(baseContext,"onUnavailable", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext,"Network was lost", Toast.LENGTH_LONG).show()
             }
         }
 
